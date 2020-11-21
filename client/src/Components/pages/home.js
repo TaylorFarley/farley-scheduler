@@ -2,7 +2,12 @@ import React, {useState, useEffect} from 'react';
 import $ from 'jquery';
 import Register from '../Register'
 import Login from '../Login'
+import Axios from 'axios'
+
 const Home = (props) => {
+
+const [userData, setUserData] = useState({token: '', user: ''});
+
 
 const [LoginRegister, setLoginRegister] = useState(false)
 
@@ -11,9 +16,35 @@ const [LoginRegister, setLoginRegister] = useState(false)
 		if(token){
 			setLoginRegister(true)
 		}
-	  }, []);
+	  }, userData);
 
+const RegisterFn = (register)=>{
+	
+	let {email, password} = register
+	Axios
+	.post("http://localhost:4000/users/register", register)
+	.then((res) =>
+	{
+	  const loginRes = Axios.post("http://localhost:4000/users/login", {
+		email,
+		password,
+	  }).then((res)=>{	
+		setUserData({
+		  ...userData,
+		  token: res.data.token,
+		  user: res.data.user.displayName,
+		});
 
+		localStorage.setItem("auth-token", res.data.token);
+		setLoginRegister(true)
+	  });
+	 
+	
+	})
+	.catch((error) => {
+	  console.log(error);
+	});
+}
 	  console.log(LoginRegister)
     return (
       
@@ -49,7 +80,7 @@ const [LoginRegister, setLoginRegister] = useState(false)
 				<h2>Work</h2>
 			</header>
 			<p>
-				{LoginRegister?(<h1>welcome</h1>):(<Register />)}
+				{LoginRegister?(<h1>welcome</h1>):(<Register RegisterFn={RegisterFn} />)}
 	
 							</p>
 			<section>

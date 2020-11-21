@@ -40,7 +40,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <Home UserData={userData}/>
+      <Home/>
       </React.Fragment>
       
 

@@ -48,16 +48,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Register() {
+export default function Register(props) {
   const classes = useStyles();
  
   const [register, setRegister] = useState([
     {email: "", password: "", passwordCheck: "", displayName:"" },
   ]);
 
-  const [userData, setUserData] = useState({token: '', user: ''});
-
-
+ 
   const handleFieldChange = (evt) => {
     setRegister((prevState) => ({
       ...prevState,
@@ -67,35 +65,10 @@ export default function Register() {
   
 
 
-  const submitHandler = async(e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    console.log(register)
-    // const {email, password} = register
-      console.log('clicked')
-     let {email, password} = register
-      Axios
-      .post("http://localhost:4000/users/register", register)
-      .then((res) =>
-      {console.log(res)
-        const loginRes = Axios.post("http://localhost:4000/users/login", {
-          email,
-          password,
-        }).then((res)=>{
-          console.log(res.data.user.displayName)
-          setUserData({
-            ...userData,
-            token: res.data.token,
-            user: res.data.user.displayName,
-          });
-          localStorage.setItem("auth-token", res.data.token);
-          console.log(userData)
-        });
-       
-      
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  
+    props.RegisterFn(register)
 
      
     
