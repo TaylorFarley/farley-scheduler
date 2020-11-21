@@ -9,7 +9,7 @@ const Home = (props) => {
 const [userData, setUserData] = useState({token: '', user: ''});
 
 
-const [LoginRegister, setLoginRegister] = useState(false)
+const [LoginRegister, setLoginRegister] = useState('')
 
 	useEffect(() => {
 		let token = localStorage.getItem("auth-token");
@@ -18,7 +18,7 @@ const [LoginRegister, setLoginRegister] = useState(false)
 		}
 	  }, userData);
 
-const RegisterFn = (register)=>{
+const RegisterLoginFn = (register)=>{
 	
 	let {email, password} = register
 	Axios
@@ -80,7 +80,7 @@ const RegisterFn = (register)=>{
 				<h2>Work</h2>
 			</header>
 			<p>
-				{LoginRegister?(<h1>welcome</h1>):(<Register RegisterFn={RegisterFn} />)}
+				{LoginRegister?(<h1>welcome</h1>):(<Login LoginFn={RegisterLoginFn} />)}
 	
 							</p>
 			<section>
