@@ -18,7 +18,9 @@ const [LoginRegister, setLoginRegister] = useState('')
 		}
 	  }, userData);
 
-const RegisterLoginFn = (register)=>{
+	
+
+const RegisterFn = (register)=>{
 	
 	let {email, password} = register
 	Axios
@@ -45,7 +47,41 @@ const RegisterLoginFn = (register)=>{
 	  console.log(error);
 	});
 }
-	  console.log(LoginRegister)
+
+const LoginFn = (register)=>{
+	
+	let {email, password} = register
+	
+	  const loginRes = Axios.post("http://localhost:4000/users/login", {
+		email,
+		password,
+	  }).then((res)=>{	
+		setUserData({
+		  ...userData,
+		  token: res.data.token,
+		  user: res.data.user.displayName,
+		});
+
+		localStorage.setItem("auth-token", res.data.token);
+		setLoginRegister(true)
+	  });
+	 
+	
+	
+}
+const logout = () => {
+    setUserData({
+		...userData,
+      token: undefined,
+      user: undefined,
+	});
+	setLoginRegister(false)
+    localStorage.setItem("auth-token", "");
+  };
+
+	
+	  
+	       
     return (
       
 
@@ -54,9 +90,9 @@ const RegisterLoginFn = (register)=>{
 				
 <nav id="nav">
 	<a href="#" class="icon solid fa-home"><span>Home</span></a>
-	<a href="#work" class="icon solid fa-folder"><span>Work</span></a>
+	<a href="#work" class="icon solid fa-address-card"><span>Login</span></a>
 	<a href="#contact" class="icon solid fa-envelope"><span>Contact</span></a>
-	<a href="https://twitter.com/ajlkn" class="icon brands fa-twitter"><span>Twitter</span></a>
+	<a href="https://twitter.com/taylorwfarley" class="icon brands fa-twitter"><span>Twitter</span></a>
 </nav>
 
 
@@ -77,10 +113,14 @@ const RegisterLoginFn = (register)=>{
 	
 		<article id="work" class="panel">
 			<header>
-				<h2>Work</h2>
+				
 			</header>
 			<p>
-				{LoginRegister?(<h1>welcome</h1>):(<Login LoginFn={RegisterLoginFn} />)}
+	{LoginRegister?(
+	
+	<button onClick={logout}>Log out</button>
+	
+	):(<Login LoginFn={LoginFn} RegisterFn={RegisterFn} />)}
 	
 							</p>
 			<section>
