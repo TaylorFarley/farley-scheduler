@@ -39,7 +39,7 @@ const Calendar = () => {
     };
 
     checkLoggedIn();
-  }, []);
+  }, userData);
   console.log(userData);
 
   console.log(selectedDate);
@@ -53,7 +53,7 @@ const Calendar = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log('hi')
+   
     const makeApt = Axios.post("http://localhost:4000/schedules/book", {
       selectedDate,
     }).then((res) => {
@@ -67,7 +67,7 @@ const Calendar = () => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
      <DateTimePicker
         variant="inline"
-        label="Select Date"
+        label="Select Date and Time"
         value={selectedDate}
         onChange={handleDateChange}
       />        

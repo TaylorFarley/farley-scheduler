@@ -1,21 +1,48 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
-import Register from "../Register";
+
 import Login from "../Login";
 import Axios from "axios";
 import Calendar from "../Calendar";
 const Home = (props) => {
-  const [userData, setUserData] = useState({ token: "", user: "" });
+  
 
-  const [LoginRegister, setLoginRegister] = useState("");
+  const [LoginRegister, setLoginRegister] = useState(false);
+  const [userData, setUserData] = useState({
+    token: undefined,
+    user: undefined,
+  });
+
 
   useEffect(() => {
-    let token = localStorage.getItem("auth-token");
-    if (token) {
-      setLoginRegister(true);
-    }
-  }, userData);
+    const checkLoggedIn = async () => {
+      let token = localStorage.getItem("auth-token");
+      if (token === null) {
+        localStorage.setItem("auth-token", "");
+        token = "";
+      }
+      const tokenRes = await Axios.post(
+        "http://localhost:4000/users/tokenIsValid",
+        null,
+        { headers: { "x-auth-token": token } }
+      );
+      if (tokenRes.data) {
+        const userRes = await Axios.get("http://localhost:4000/users/", {
+          headers: { "x-auth-token": token },
+        });
+        setUserData({
+          token,
+          user: userRes.data,
+        });
+        setLoginRegister(true)
+      }
+    };
 
+    checkLoggedIn();
+  },[]);
+
+
+  
   const RegisterFn = (register) => {
     let { email, password } = register;
     Axios.post("http://localhost:4000/users/register", register)
@@ -45,15 +72,16 @@ const Home = (props) => {
     const loginRes = Axios.post("http://localhost:4000/users/login", {
       email,
       password,
-    }).then((res) => {
+    }).then((res) => {    
+      console.log(res.data.user.displayName)
+      localStorage.setItem("auth-token", res.data.token);
+      setLoginRegister(true);
       setUserData({
         ...userData,
         token: res.data.token,
         user: res.data.user.displayName,
       });
-
-      localStorage.setItem("auth-token", res.data.token);
-      setLoginRegister(true);
+     
     });
   };
   const logout = () => {
@@ -100,7 +128,7 @@ const Home = (props) => {
         <article id="work" className="panel">
           <header></header>
           <p>
-            <Calendar userData={props.userData}/>
+            <Calendar userData={userData}/>
           </p>
           <section>
             <div className="row">
