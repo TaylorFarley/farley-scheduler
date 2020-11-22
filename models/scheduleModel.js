@@ -1,26 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-let scheduleSchema = new Schema(
-  {
-    title: {
-      type: String,
-    },
-    location: {
-      type: String,
-    },
-    time: {
-      type: String,
-    },
-    created_at: {
-      type: Date,
-      required: true,
-      default: Date.now(),
-    },
+// Create Schema
+const ScheduleSchema = new Schema({
+  selectedDate: {
+    type: String,
+    required: true
   },
-  {
-    collection: "schedules",
+  date: {
+    type: Date,
+    default: Date.now
   }
-);
-
-module.exports = mongoose.model("Schedule", scheduleSchema);
+});
+module.exports = Schedule = mongoose.model("Schedules", ScheduleSchema);
