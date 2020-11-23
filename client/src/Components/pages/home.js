@@ -4,6 +4,7 @@ import $ from "jquery";
 import Login from "../Login";
 import Axios from "axios";
 import Calendar from "../Calendar";
+import AppointmentTable from "../AppointmentTable"
 const Home = (props) => {
   
 
@@ -13,6 +14,16 @@ const Home = (props) => {
     user: undefined,
   });
 
+  const [records ,setRecords] = useState({
+    _id: undefined,
+    selectedDate: undefined,
+    uid: undefined,
+    date: undefined,
+    __v: undefined
+  })
+
+
+  const [showTable, setshowTable] = useState(false)
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -41,6 +52,7 @@ const Home = (props) => {
     checkLoggedIn();
   },[]);
 
+  
  
   
   const RegisterFn = (register) => {
@@ -73,13 +85,13 @@ const Home = (props) => {
       email,
       password,
     }).then((res) => {    
-      console.log(res.data.user.displayName)
+      console.log(res.data.user)
       localStorage.setItem("auth-token", res.data.token);
       setLoginRegister(true);
       setUserData({
         ...userData,
         token: res.data.token,
-        user: res.data.user.displayName,
+        user: res.data.user,
       });
      
     });
@@ -117,8 +129,10 @@ const Home = (props) => {
       </nav>
 
       <div id="main">
-        <article id="home" className="panel">
-        
+        <article id="home" className="panel">   
+
+
+
             {LoginRegister ? (
               <>
                {/* {getSchedule()} */}
@@ -130,15 +144,16 @@ const Home = (props) => {
                 const makeApt = Axios.post("/schedules/getschedule", {
                   uid
                 }).then((res) => {
-                    console.log('coming back now')
-                  console.log(res.data);
+                  setRecords(res.data)     
+                  setshowTable(true)
+              
                 });
-               }}>Console Log Data</button>
+               }}>Load Appointments</button>
              </>
             ) : (
               <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />
             )}
-        
+           {showTable?(<AppointmentTable selectedDate={records}/>):null}
         </article>
 
         <article id="work" className="panel">
@@ -198,9 +213,9 @@ const Home = (props) => {
 
       <div id="footer">
         <ul className="copyright">
-          <li>&copy; Untitled.</li>
+          <li>&copy; TWFMade.</li>
           <li>
-            Design: <a href="http://html5up.net">HTML5 UP</a>
+            Design: <a href="https://twfmade.ca">TWFMade.ca</a>
           </li>
         </ul>
       </div>
