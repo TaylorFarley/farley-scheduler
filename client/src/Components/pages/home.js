@@ -22,12 +22,12 @@ const Home = (props) => {
         token = "";
       }
       const tokenRes = await Axios.post(
-        "http://localhost:4000/users/tokenIsValid",
+        "/users/tokenIsValid",
         null,
         { headers: { "x-auth-token": token } }
       );
       if (tokenRes.data) {
-        const userRes = await Axios.get("http://localhost:4000/users/", {
+        const userRes = await Axios.get("/users/", {
           headers: { "x-auth-token": token },
         });
         setUserData({
@@ -45,9 +45,9 @@ const Home = (props) => {
   
   const RegisterFn = (register) => {
     let { email, password } = register;
-    Axios.post("http://localhost:4000/users/register", register)
+    Axios.post("/users/register", register)
       .then((res) => {
-        const loginRes = Axios.post("http://localhost:4000/users/login", {
+        const loginRes = Axios.post("/users/login", {
           email,
           password,
         }).then((res) => {
@@ -69,7 +69,7 @@ const Home = (props) => {
   const LoginFn = (register) => {
     let { email, password } = register;
 
-    const loginRes = Axios.post("http://localhost:4000/users/login", {
+    const loginRes = Axios.post("/users/login", {
       email,
       password,
     }).then((res) => {    
@@ -127,7 +127,7 @@ const Home = (props) => {
                 
                 let uid = userData.user.id
                 console.log(`sending ${uid}`)
-                const makeApt = Axios.post("http://localhost:4000/schedules/getschedule", {
+                const makeApt = Axios.post("/schedules/getschedule", {
                   uid
                 }).then((res) => {
                     console.log('coming back now')

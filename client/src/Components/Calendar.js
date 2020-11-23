@@ -23,12 +23,12 @@ const Calendar = () => {
         token = "";
       }
       const tokenRes = await Axios.post(
-        "http://localhost:4000/users/tokenIsValid",
+        "/users/tokenIsValid",
         null,
         { headers: { "x-auth-token": token } }
       );
       if (tokenRes.data) {
-        const userRes = await Axios.get("http://localhost:4000/users/", {
+        const userRes = await Axios.get("/users/", {
           headers: { "x-auth-token": token },
         });
         setUserData({
@@ -77,7 +77,7 @@ const Calendar = () => {
                 
                 let uid = userData.user.id
                 console.log(`sending ${selectedDate}`)
-                const makeApt = Axios.post("http://localhost:4000/schedules/book", {
+                const makeApt = Axios.post("/schedules/book", {
                   selectedDate,
                   uid
                 }).then((res) => {
