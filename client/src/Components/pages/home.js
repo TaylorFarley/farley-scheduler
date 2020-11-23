@@ -53,7 +53,18 @@ const Home = (props) => {
   },[]);
 
   
- 
+  useEffect(() => {
+    let uid = userData.user.id
+    console.log(`sending ${uid}`)
+    const makeApt = Axios.post("/schedules/getschedule", {
+      uid
+    }).then((res) => {
+      setRecords(res.data)     
+      setshowTable(true)
+  
+    });
+  },LoginRegister);
+  
   
   const RegisterFn = (register) => {
     let { email, password } = register;
@@ -149,6 +160,7 @@ const Home = (props) => {
               
                 });
                }}>Load Appointments</button>
+
              </>
             ) : (
               <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />
