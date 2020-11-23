@@ -41,7 +41,7 @@ const Home = (props) => {
     checkLoggedIn();
   },[]);
 
-
+ 
   
   const RegisterFn = (register) => {
     let { email, password } = register;
@@ -94,6 +94,8 @@ const Home = (props) => {
     localStorage.setItem("auth-token", "");
   };
 
+
+
   return (
     <div id="wrapper">
       <nav id="nav">
@@ -116,13 +118,27 @@ const Home = (props) => {
 
       <div id="main">
         <article id="home" className="panel">
-          <header>
+        
             {LoginRegister ? (
-              <button onClick={logout}>Log out</button>
+              <>
+               {/* {getSchedule()} */}
+              <button onClick={logout} >Log out</button><br></br>
+              <button onClick={()=>{
+                
+                let uid = userData.user.id
+                console.log(`sending ${uid}`)
+                const makeApt = Axios.post("http://localhost:4000/schedules/getschedule", {
+                  uid
+                }).then((res) => {
+                    console.log('coming back now')
+                  console.log(res.data);
+                });
+               }}>Console Log Data</button>
+             </>
             ) : (
               <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />
             )}
-          </header>
+        
         </article>
 
         <article id="work" className="panel">

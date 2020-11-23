@@ -25,8 +25,7 @@ router.post("/register", async (req, res) => {
     User.create(newUser, (error, data) => {
       if (error) {
         return next(error);
-      } else {
-    
+      } else {    
         res.send(JSON.stringify(data));
       }
     });

@@ -12,7 +12,7 @@ const Calendar = () => {
     user: undefined,
   });
   const [selectedDate, handleDateChange] = useState(
-    new Date("2018-01-01T00:00:00.000Z")
+    new Date("2020-01-01T00:00:00.000Z")
   );
 
   useEffect(() => {
@@ -40,9 +40,6 @@ const Calendar = () => {
 
     checkLoggedIn();
   }, userData);
-  console.log(userData);
-
-  console.log(selectedDate);
 
   const useStyles = makeStyles((theme) => ({
     submit: {
@@ -50,17 +47,6 @@ const Calendar = () => {
     },
   }));
   const classes = useStyles();
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-   
-    const makeApt = Axios.post("http://localhost:4000/schedules/book", {
-      selectedDate,
-    }).then((res) => {
-        console.log('sending')
-      console.log(res);
-    });
-  };
 
   // prettier-ignore
   return (
@@ -88,13 +74,15 @@ const Calendar = () => {
                color="primary"
                className={classes.submit}
                onClick={()=>{
-               
+                
+                let uid = userData.user.id
                 console.log(`sending ${selectedDate}`)
                 const makeApt = Axios.post("http://localhost:4000/schedules/book", {
                   selectedDate,
+                  uid
                 }).then((res) => {
-                    console.log('sending')
-                  console.log(res);
+                    console.log('coming back now')
+                  console.log(res.data);
                 });
                }}
              >

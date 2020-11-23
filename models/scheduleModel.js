@@ -6,6 +6,10 @@ const ScheduleSchema = new Schema({
     type: String,
     required: true
   },
+  uid: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
