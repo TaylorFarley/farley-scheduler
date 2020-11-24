@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
-import Button from '@material-ui/core/Button';
-
-
-
+import Button from "@material-ui/core/Button";
 
 import Login from "../Login";
 import Axios from "axios";
 import Calendar from "../Calendar";
-import AppointmentTable from "../AppointmentTable"
+import AppointmentTable from "../AppointmentTable";
 const Home = (props) => {
-  
-
   const [LoginRegister, setLoginRegister] = useState(false);
   const [userData, setUserData] = useState({
     token: undefined,
     user: undefined,
   });
 
-  const [records ,setRecords] = useState({
+  const [records, setRecords] = useState({
     _id: undefined,
     selectedDate: undefined,
     uid: undefined,
     date: undefined,
-    __v: undefined
-  })
+    __v: undefined,
+  });
 
-
-  const [showTable, setshowTable] = useState(false)
+  const [showTable, setshowTable] = useState(false);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -36,11 +30,9 @@ const Home = (props) => {
         localStorage.setItem("auth-token", "");
         token = "";
       }
-      const tokenRes = await Axios.post(
-        "/users/tokenIsValid",
-        null,
-        { headers: { "x-auth-token": token } }
-      );
+      const tokenRes = await Axios.post("/users/tokenIsValid", null, {
+        headers: { "x-auth-token": token },
+      });
       if (tokenRes.data) {
         const userRes = await Axios.get("/users/", {
           headers: { "x-auth-token": token },
@@ -49,16 +41,13 @@ const Home = (props) => {
           token,
           user: userRes.data,
         });
-        setLoginRegister(true)
+        setLoginRegister(true);
       }
     };
 
     checkLoggedIn();
-  },[]);
+  }, []);
 
-  
- 
-  
   const RegisterFn = (register) => {
     let { email, password } = register;
     Axios.post("/users/register", register)
@@ -88,8 +77,8 @@ const Home = (props) => {
     const loginRes = Axios.post("/users/login", {
       email,
       password,
-    }).then((res) => {    
-      console.log(res.data.user)
+    }).then((res) => {
+      console.log(res.data.user);
       localStorage.setItem("auth-token", res.data.token);
       setLoginRegister(true);
       setUserData({
@@ -97,7 +86,6 @@ const Home = (props) => {
         token: res.data.token,
         user: res.data.user,
       });
-     
     });
   };
   const logout = () => {
@@ -109,8 +97,6 @@ const Home = (props) => {
     setLoginRegister(false);
     localStorage.setItem("auth-token", "");
   };
-
-
 
   return (
     <div id="wrapper">
@@ -133,37 +119,47 @@ const Home = (props) => {
       </nav>
 
       <div id="main">
-        <article id="home" className="panel">   
-
-
-
-            {LoginRegister ? (
-              <>
-               {/* {getSchedule()} */}
-              <Button variant="contained" color="primary" aria-label="contained primary button group" style={{marginRight: "15px"}} onClick={logout} >Log out</Button>
-              <Button variant="contained" color="primary" aria-label="contained primary button group" onClick={()=>{
-                
-                let uid = userData.user.id
-                console.log(`sending ${uid}`)
-                const makeApt = Axios.post("/schedules/getschedule", {
-                  uid
-                }).then((res) => {
-                  setRecords(res.data)     
-                  setshowTable(true)
-              
-                });
-               }}>Load Appointments</Button>
-             </>
-            ) : (
-              <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />
-            )}
-           {showTable?(<AppointmentTable selectedDate={records}/>):null}
+        <article id="home" className="panel">
+          {LoginRegister ? (
+            <>
+              {/* {getSchedule()} */}
+              <Button
+                variant="contained"
+                color="primary"
+                aria-label="contained primary button group"
+                style={{ marginRight: "15px" }}
+                onClick={logout}
+              >
+                Log out
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                aria-label="contained primary button group"
+                onClick={() => {
+                  let uid = userData.user.id;
+                  console.log(`sending ${uid}`);
+                  const makeApt = Axios.post("/schedules/getschedule", {
+                    uid,
+                  }).then((res) => {
+                    setRecords(res.data);
+                    setshowTable(true);
+                  });
+                }}
+              >
+                Load Appointments
+              </Button>
+            </>
+          ) : (
+            <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />
+          )}
+          {showTable ? <AppointmentTable selectedDate={records} /> : null}
         </article>
 
         <article id="work" className="panel">
           <header></header>
           <p>
-            <Calendar userData={userData}/>
+            <Calendar userData={userData} />
           </p>
           <section>
             <div className="row">
