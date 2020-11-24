@@ -1,17 +1,44 @@
 import React from 'react';
-
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+const useStyles = makeStyles({
+    table: {
+      minWidth: 50,
+    },
+  });
 const AppointmentTable = (props) => {
+    const classes = useStyles();
     return (
         <div>
-          {props.selectedDate.map((x)=>{
-           return (
-           <div>
-               {x.selectedDate}
-            </div>
-               )
-          })}
-            {console.log(props.selectedDate)}
-        </div>
+             <TableContainer component={Paper}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+         
+            <TableCell align="left">Date</TableCell>
+            <TableCell align="left">Service</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.selectedDate.map((row) => (
+            <TableRow key={row.uid}>
+           
+              <TableCell align="left">{row.selectedDate}</TableCell>
+              <TableCell align="left">{row.service}</TableCell>
+          
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+          </div>
     );
 };
 

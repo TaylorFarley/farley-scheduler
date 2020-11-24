@@ -10,6 +10,10 @@ const ScheduleSchema = new Schema({
     type: String,
     required: true
   },
+  service: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now

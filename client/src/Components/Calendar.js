@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { DateTimePicker, KeyboardDateTimePicker } from "@material-ui/pickers";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
 
 const Calendar = () => {
   const [userData, setUserData] = useState({
@@ -14,6 +16,18 @@ const Calendar = () => {
   const [selectedDate, handleDateChange] = useState(
     new Date("2020-01-01T00:00:00.000Z")
   );
+
+  const [service, setService] = useState(
+    {service: undefined}
+  );
+
+ 
+  const handleFieldChange = (evt) => {
+    setService({
+      ...service,
+      service: evt.target.value
+    })
+  };
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -67,6 +81,18 @@ const Calendar = () => {
        
         format="yyyy/MM/dd HH:mm"
       />
+      <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="Service"
+            label="Service"
+            name="Service"
+            autoComplete="Service"           
+            onChange={handleFieldChange}
+            value={service.email}
+          />
           <Button
                type="submit"
                fullWidth
@@ -79,7 +105,8 @@ const Calendar = () => {
                 console.log(`sending ${selectedDate}`)
                 const makeApt = Axios.post("/schedules/book", {
                   selectedDate,
-                  uid
+                  uid,
+                  service
                 }).then((res) => {
                     console.log('coming back now')
                   console.log(res.data);

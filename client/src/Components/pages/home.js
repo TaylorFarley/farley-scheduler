@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
+import Button from '@material-ui/core/Button';
+
+
+
 
 import Login from "../Login";
 import Axios from "axios";
@@ -53,18 +57,7 @@ const Home = (props) => {
   },[]);
 
   
-  useEffect(() => {
-    let uid = userData.user.id
-    console.log(`sending ${uid}`)
-    const makeApt = Axios.post("/schedules/getschedule", {
-      uid
-    }).then((res) => {
-      setRecords(res.data)     
-      setshowTable(true)
-  
-    });
-  },LoginRegister);
-  
+ 
   
   const RegisterFn = (register) => {
     let { email, password } = register;
@@ -147,8 +140,8 @@ const Home = (props) => {
             {LoginRegister ? (
               <>
                {/* {getSchedule()} */}
-              <button onClick={logout} >Log out</button><br></br>
-              <button onClick={()=>{
+              <Button variant="contained" color="primary" aria-label="contained primary button group" style={{marginRight: "15px"}} onClick={logout} >Log out</Button>
+              <Button variant="contained" color="primary" aria-label="contained primary button group" onClick={()=>{
                 
                 let uid = userData.user.id
                 console.log(`sending ${uid}`)
@@ -159,8 +152,7 @@ const Home = (props) => {
                   setshowTable(true)
               
                 });
-               }}>Load Appointments</button>
-
+               }}>Load Appointments</Button>
              </>
             ) : (
               <Login LoginFn={LoginFn} RegisterFn={RegisterFn} />

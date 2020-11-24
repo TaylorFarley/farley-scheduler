@@ -6,12 +6,14 @@ router.post("/book", async (req, res) => {
   try {
     console.log(req.body)
     let { selectedDate, uid } = req.body;
+    let {service} = req.body.service
 
     const newApt = new Schedule({
       selectedDate,
-      uid
+      uid,
+      service
     });
-
+    console.log(newApt)
     Schedule.create(newApt, (error, data) => {
       if (error) {
         return next(error);
